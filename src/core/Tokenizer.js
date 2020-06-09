@@ -38,6 +38,9 @@ export default class Tokenizer {
     this.OPEN_PAREN_REGEX = this.createParenRegex(cfg.openParens);
     this.CLOSE_PAREN_REGEX = this.createParenRegex(cfg.closeParens);
 
+    this.JINJA_OPEN_PAREN_REGEX = this.createJinjaParenRegex(cfg.jinjaOpenParens);
+    this.JINJA_CLOSE_PAREN_REGEX = this.createJinjaParenRegex(cfg.jinjaCloseParens);
+
     this.INDEXED_PLACEHOLDER_REGEX = this.createPlaceholderRegex(
       cfg.indexedPlaceholderTypes,
       '[0-9]*'
@@ -109,6 +112,14 @@ export default class Tokenizer {
     }
   }
 
+  createJinjaParenRegex(parens) {
+    return new RegExp('^(' + parens.map(p => this.escapeJinjaParen(p)).join('|') + ')', 'iu');
+  }
+
+  escapeJinjaParen(paren) {
+    return escapeRegExp(paren);
+  }
+
   createPlaceholderRegex(types, pattern) {
     if (isEmpty(types)) {
       return false;
@@ -152,6 +163,8 @@ export default class Tokenizer {
       this.getStringToken(input) ||
       this.getOpenParenToken(input) ||
       this.getCloseParenToken(input) ||
+      this.getJinjaOpenParenToken(input) ||
+      this.getJinjaCloseParenToken(input) ||
       this.getPlaceholderToken(input) ||
       this.getNumberToken(input) ||
       this.getReservedWordToken(input, previousToken) ||
@@ -209,6 +222,22 @@ export default class Tokenizer {
       input,
       type: tokenTypes.CLOSE_PAREN,
       regex: this.CLOSE_PAREN_REGEX
+    });
+  }
+
+  getJinjaOpenParenToken(input) {
+    return this.getTokenOnFirstMatch({
+      input,
+      type: tokenTypes.JINJA_OPEN_PAREN,
+      regex: this.JINJA_OPEN_PAREN_REGEX
+    });
+  }
+
+  getJinjaCloseParenToken(input) {
+    return this.getTokenOnFirstMatch({
+      input,
+      type: tokenTypes.JINJA_CLOSE_PAREN,
+      regex: this.JINJA_CLOSE_PAREN_REGEX
     });
   }
 

@@ -1,6 +1,7 @@
 import Db2Formatter from './languages/Db2Formatter';
 import N1qlFormatter from './languages/N1qlFormatter';
 import PlSqlFormatter from './languages/PlSqlFormatter';
+import JinjaSqlFormatter from './languages/JinjaSqlFormatter';
 import StandardSqlFormatter from './languages/StandardSqlFormatter';
 
 /**
@@ -24,8 +25,10 @@ export const format = (query, cfg = {}) => {
     case 'pl/sql':
       return new PlSqlFormatter(cfg).format(query);
     case 'sql':
-    case undefined:
       return new StandardSqlFormatter(cfg).format(query);
+    case 'jinja':
+    case undefined:
+      return new JinjaSqlFormatter(cfg).format(query);
     default:
       throw Error(`Unsupported SQL dialect: ${cfg.language}`);
   }

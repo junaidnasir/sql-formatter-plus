@@ -20,6 +20,7 @@ export default class Formatter {
     this.cfg = cfg || {};
     this.indentation = new Indentation(this.cfg.indent);
     this.inlineBlock = new InlineBlock();
+    this.insideJinja = false;
     this.params = new Params(this.cfg.params);
     this.tokenizer = tokenizer;
     this.tokenOverride = tokenOverride;
@@ -48,8 +49,9 @@ export default class Formatter {
       this.index = index;
 
       if (this.tokenOverride) token = this.tokenOverride(token, this.previousReservedWord) || token;
-
-      if (token.type === tokenTypes.WHITESPACE) {
+      if (this.insideJinja && token.type != tokenTypes.JINJA_CLOSE_PAREN) {
+        formattedQuery = this.formatInsideJinja(token, formattedQuery);
+      } else if (token.type === tokenTypes.WHITESPACE) {
         // ignore (we do our own whitespace formatting)
       } else if (token.type === tokenTypes.LINE_COMMENT) {
         formattedQuery = this.formatLineComment(token, formattedQuery);
@@ -71,6 +73,10 @@ export default class Formatter {
         formattedQuery = this.formatOpeningParentheses(token, formattedQuery);
       } else if (token.type === tokenTypes.CLOSE_PAREN) {
         formattedQuery = this.formatClosingParentheses(token, formattedQuery);
+      } else if (token.type === tokenTypes.JINJA_OPEN_PAREN) {
+        formattedQuery = this.formatJinjaOpeningParentheses(token, formattedQuery);
+      } else if (token.type === tokenTypes.JINJA_CLOSE_PAREN) {
+        formattedQuery = this.formatJinjaClosingParentheses(token, formattedQuery);
       } else if (token.type === tokenTypes.PLACEHOLDER) {
         formattedQuery = this.formatPlaceholder(token, formattedQuery);
       } else if (token.value === ',') {
@@ -161,6 +167,20 @@ export default class Formatter {
       this.indentation.decreaseBlockLevel();
       return this.formatWithSpaces(token, this.addNewline(query));
     }
+  }
+
+  formatJinjaOpeningParentheses(token, query) {
+    this.insideJinja = true;
+    return query + token.value;
+  }
+
+  formatInsideJinja(token, query) {
+    return query + token.value;
+  }
+
+  formatJinjaClosingParentheses(token, query) {
+    this.insideJinja = false;
+    return query + token.value;
   }
 
   formatPlaceholder(token, query) {

@@ -15,5 +15,7 @@ export default {
   LINE_COMMENT: 'line-comment',
   BLOCK_COMMENT: 'block-comment',
   NUMBER: 'number',
-  PLACEHOLDER: 'placeholder'
+  PLACEHOLDER: 'placeholder',
+  JINJA_OPEN_PAREN: 'jinja-open-paren',
+  JINJA_CLOSE_PAREN: 'jinja-close-paren'
 };
