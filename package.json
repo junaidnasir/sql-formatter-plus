@@ -36,10 +36,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kufii/sql-formatter-plus.git"
+    "url": "https://github.com/junaidnasir/sql-formatter-plus.git"
   },
   "bugs": {
-    "url": "https://github.com/kufii/sql-formatter-plus/issues"
+    "url": "https://github.com/junaidnasir/sql-formatter-plus/issues"
   },
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
