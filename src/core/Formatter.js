@@ -49,7 +49,7 @@ export default class Formatter {
       this.index = index;
 
       if (this.tokenOverride) token = this.tokenOverride(token, this.previousReservedWord) || token;
-      if (this.insideJinja && token.type != tokenTypes.JINJA_CLOSE_PAREN) {
+      if (this.insideJinja && token.type !== tokenTypes.JINJA_CLOSE_PAREN) {
         formattedQuery = this.formatInsideJinja(token, formattedQuery);
       } else if (token.type === tokenTypes.WHITESPACE) {
         // ignore (we do our own whitespace formatting)

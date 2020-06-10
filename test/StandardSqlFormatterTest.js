@@ -3,7 +3,7 @@ import behavesLikeSqlFormatter from './behavesLikeSqlFormatter';
 import dedent from 'dedent-js';
 
 describe('StandardSqlFormatter', () => {
-  behavesLikeSqlFormatter();
+  behavesLikeSqlFormatter('sql');
 
   const format = (query, cfg = {}) => sqlFormatter.format(query, { ...cfg, language: 'sql' });
 

@@ -59,7 +59,7 @@ export default function behavesLikeSqlFormatter(language) {
   });
 
   it('formats SELECT with complex WHERE', () => {
-    const result = sqlFormatter.format(`
+    const result = format(`
       SELECT * FROM foo WHERE Column1 = 'testing'
       AND ( (Column2 = Column3 OR Column4 >= NOW()) );
     `);
@@ -510,7 +510,7 @@ export default function behavesLikeSqlFormatter(language) {
   });
 
   it('correctly indents create statement after select', () => {
-    const result = sqlFormatter.format(`
+    const result = format(`
       SELECT * FROM test;
       CREATE TABLE TEST(id NUMBER NOT NULL, col1 VARCHAR2(20), col2 VARCHAR2(20));
     `);

@@ -1,37 +1,23 @@
-# SQL Formatter Plus
+# SQL Formatter Plus Jinja
 
-A fork of [SQL Formatter](https://github.com/zeroturnaround/sql-formatter) with some extra bug fixes and features.
-
-Fixes:
-
-- Fixed formatting issue with unicode characters
-- Fixed comment formatting for non-unix line endings
-- Fixed null reference on input tokenization
-- Fixed indentation of multiple statements
-
-New Features:
-
-- Convert keywords to uppercase with the `uppercase` config option
-- Configurable number of line breaks between queries with the `linesBetweenQueries` config option
+A fork of [SQL Formatter](https://github.com/kufii/sql-formatter-plus) with support for Jinja SQL.
 
 **SQL Formatter** is a JavaScript library for pretty-printing SQL queries.
 It started as a port of a [PHP Library][], but has since considerably diverged.
 It supports [Standard SQL][], [Couchbase N1QL][], [IBM DB2][] and [Oracle PL/SQL][] dialects.
-
-[Try the demo.](https://kufii.github.io/sql-formatter-plus//)
 
 ## Install
 
 Get the latest version from NPM:
 
 ```shell
-npm install sql-formatter
+npm install sql-formatter-plus-jinja
 ```
 
 ## Usage
 
 ```javascript
-import sqlFormatter from 'sql-formatter-plus';
+import sqlFormatter from 'sql-formatter-plus-jinja';
 
 console.log(sqlFormatter.format('SELECT * FROM table1'));
 ```
@@ -49,7 +35,7 @@ You can also pass in configuration options:
 
 ```javascript
 sqlFormatter.format('SELECT *', {
-  language: 'n1ql', // Defaults to "sql"
+  language: 'n1ql', // Defaults to "jinja"
   indent: '    ', // Defaults to two spaces,
   uppercase: true, // Defaults to false
   linesBetweenQueries: 2 // Defaults to 1

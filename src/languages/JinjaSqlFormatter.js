@@ -310,27 +310,13 @@ const reservedTopLevelWords = [
   'RIGHT OUTER JOIN'
 ];
 
-const reservedTopLevelWordsNoIndent = [
-  'INTERSECT',
-  'INTERSECT ALL',
-  'MINUS',
-  'UNION',
-  'UNION ALL'
-];
+const reservedTopLevelWordsNoIndent = ['INTERSECT', 'INTERSECT ALL', 'MINUS', 'UNION', 'UNION ALL'];
 
-const reservedNewlineWords = [
-  'AND',
-  'ELSE',
-  'OR',
-  'WHEN',
-  'XOR',
-  'USING',
-  'ON'
-];
+const reservedNewlineWords = ['AND', 'ELSE', 'OR', 'WHEN', 'XOR', 'USING', 'ON'];
 
 let tokenizer;
 
-export default class StandardSqlFormatter {
+export default class JinjaSqlFormatter {
   /**
    * @param {Object} cfg Different set of configurations
    */
@@ -354,12 +340,12 @@ export default class StandardSqlFormatter {
         stringTypes: [`""`, "N''", "''", '``', '[]'],
         openParens: ['(', 'CASE'],
         closeParens: [')', 'END'],
-        jinjaOpenParens: ['{{', '{%', '{!'],
-        jinjaCloseParens: ['}}', '%}', '!}'],
+        jinjaOpenParens: ['{', '{{', '{%', '{!'],
+        jinjaCloseParens: ['}', '}}', '%}', '!}'],
         indexedPlaceholderTypes: ['?'],
-        namedPlaceholderTypes: ['@', ':'],
+        namedPlaceholderTypes: ['@'],
         lineCommentTypes: ['#', '--'],
-        specialWordChars: ['$']
+        specialWordChars: ['$', '::']
       });
     }
     return new Formatter(this.cfg, tokenizer).format(query);

@@ -12,6 +12,8 @@ export default class Tokenizer {
    *  @param {String[]} cfg.stringTypes String types to enable: "", '', ``, [], N''
    *  @param {String[]} cfg.openParens Opening parentheses to enable, like (, [
    *  @param {String[]} cfg.closeParens Closing parentheses to enable, like ), ]
+   *  @param {String[]} cfg.jinjaOpenParens Opening parentheses in Jina to enable, like {{, {%, {!
+   *  @param {String[]} cfg.jinjaCloseParens Closing parentheses in Jinja to enable, like }}, %}, !}
    *  @param {String[]} cfg.indexedPlaceholderTypes Prefixes for indexed placeholders, like ?
    *  @param {String[]} cfg.namedPlaceholderTypes Prefixes for named placeholders, like @ and :
    *  @param {String[]} cfg.lineCommentTypes Line comments to enable, like # and --
@@ -112,7 +114,7 @@ export default class Tokenizer {
     }
   }
 
-  createJinjaParenRegex(parens) {
+  createJinjaParenRegex(parens = ['{{{{{']) {
     return new RegExp('^(' + parens.map(p => this.escapeJinjaParen(p)).join('|') + ')', 'iu');
   }
 
