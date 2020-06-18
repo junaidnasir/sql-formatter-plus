@@ -11,6 +11,7 @@ export default class Formatter {
    * @param {Object} cfg
    *  @param {String} cfg.language
    *  @param {String} cfg.indent
+   *  @param {Bool} cfg.newline
    *  @param {Bool} cfg.uppercase
    *  @param {Integer} cfg.linesBetweenQueries
    *  @param {Object} cfg.params
@@ -38,8 +39,7 @@ export default class Formatter {
   format(query) {
     this.tokens = this.tokenizer.tokenize(query);
     const formattedQuery = this.getFormattedQueryFromTokens();
-
-    return formattedQuery.trim();
+    return formattedQuery;
   }
 
   getFormattedQueryFromTokens() {
@@ -49,6 +49,7 @@ export default class Formatter {
       this.index = index;
 
       if (this.tokenOverride) token = this.tokenOverride(token, this.previousReservedWord) || token;
+
       if (this.insideJinja && token.type !== tokenTypes.JINJA_CLOSE_PAREN) {
         formattedQuery = this.formatInsideJinja(token, formattedQuery);
       } else if (token.type === tokenTypes.WHITESPACE) {
@@ -91,6 +92,10 @@ export default class Formatter {
         formattedQuery = this.formatWithSpaces(token, formattedQuery);
       }
     });
+    formattedQuery = formattedQuery.trim();
+    if (this.cfg.newline) {
+      formattedQuery = formattedQuery + '\n';
+    }
     return formattedQuery;
   }
 
